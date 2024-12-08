@@ -32,11 +32,11 @@ class Sprite:
         self.angle += self.angle_vel
         self.pos.add(self.vel)
 
-        # Проверяем границы
+        # bounds
         self.pos.x %= CANVAS_WIDTH
         self.pos.y %= CANVAS_HEIGHT
 
-        # Если это ракета, проверяем пройденную дистанцию
+        # missile flight distance cap
         if self.image_name == "missile":
             dx = self.pos.x - self.start_pos.x
             dy = self.pos.y - self.start_pos.y

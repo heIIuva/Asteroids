@@ -5,7 +5,7 @@ CANVAS_HEIGHT = 600
 
 FPS = 60  # кадров в секунду
 
-# Пути к изображениям
+# image paths
 SHIP_IMAGE = "/Users/bigstepper/Downloads/ship.png"
 SHIP_THRUST_IMAGE = "/Users/bigstepper/Downloads/ship_thrust.png"
 MISSILE_IMAGE = "/Users/bigstepper/Downloads/shot2.png"
@@ -13,16 +13,16 @@ ROCK_IMAGE = "/Users/bigstepper/Downloads/asteroid_blue.png"
 NEBULA_IMAGE = "/Users/bigstepper/Downloads/nebula_blue.f2013.png"
 SPLASH_IMAGE = "/Users/bigstepper/Downloads/gamePlaceholder.png"
 
-# Параметры корабля
+# ship params
 SHIP_RADIUS = 35
 
-# Параметры ракеты
+# missile params
 MISSILE_RADIUS = 3
 MISSILE_LIFESPAN = 50
 MISSILE_SPEED = 7
 
-# Параметры камня
+# asteroid params
 ROCK_RADIUS = 40
 
-# Кол-во жизней
+# lives
 LIVES = 3

@@ -16,7 +16,7 @@ class RiceRocksApp:
         self.canvas = tk.Canvas(master, width=CANVAS_WIDTH, height=CANVAS_HEIGHT, bg="black")
         self.canvas.pack()
 
-        # Загрузка изображений
+        # images loader
         self.img_manager = ImageManager()
         self.img_manager.load_image("ship", SHIP_IMAGE)
         self.img_manager.load_image("ship_thrust", SHIP_THRUST_IMAGE)  # загружаем thrust-изображение корабля
@@ -34,24 +34,24 @@ class RiceRocksApp:
             "splash": self.img_manager.get_image("splash")
         }
 
-        # Создаём корабль
+        # init ship
         ship_pos = Vector(CANVAS_WIDTH/2, CANVAS_HEIGHT/2)
         ship_vel = Vector(0, 0)
         self.ship = Ship(ship_pos, ship_vel, 0, "ship", "ship_thrust", self.img_manager)
 
-        # Логика игры
+        # init game logic
         self.game = GameLogic(self.ship, self.images, self.img_manager)
 
-        # Привязка событий
+        # button handlers bounds
         self.master.bind("<KeyPress>", self.on_key_press)
         self.master.bind("<KeyRelease>", self.on_key_release)
         self.master.bind("<Button-1>", self.on_mouse_click)
 
         self.keys = set()
 
-        self.drawn_images = []  # ссылки на изображения текущего кадра
+        self.drawn_images = []
 
-        # Запуск игрового цикла
+        # game start
         self.update_game()
         self.master.after(1000, self.spawn_rock_periodically)
 

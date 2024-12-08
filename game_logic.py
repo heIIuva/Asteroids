@@ -28,7 +28,7 @@ class GameLogic:
         if not self.started:
             return
 
-        # Ограничение на максимальное количество астероидов
+        # asteroids amount cap
         if len(self.rocks) >= 15:
             return
 
@@ -47,7 +47,7 @@ class GameLogic:
         self.rocks = [r for r in self.rocks if r.update()]
         self.missiles = [m for m in self.missiles if m.update()]
 
-        # Столкновения ракета-камень
+        # missile and asteroid collision logic
         rocks_to_remove = []
         missiles_to_remove = []
         for r in self.rocks:
@@ -60,7 +60,7 @@ class GameLogic:
         self.rocks = [r for r in self.rocks if r not in rocks_to_remove]
         self.missiles = [m for m in self.missiles if m not in missiles_to_remove]
 
-        # Столкновения корабль-камень
+        # ship and asteroid collision logic
         for r in self.rocks:
             if r.collide(self.ship):
                 self.lives -= 1
@@ -70,31 +70,31 @@ class GameLogic:
                 break
 
     def draw(self, canvas, drawn_images):
-        # Отрисовать фон
+        # draw background
         bg_img = self.image_manager.get_rotated_image("nebula", 0)
         canvas.create_image(400, 300, image=bg_img)
         drawn_images.append(bg_img)
 
-        # Отрисовать корабль
+        # draw ship
         self.ship.draw(canvas, drawn_images)
-        # Отрисовать камни
+        # draw asteroids
         for r in self.rocks:
             r.draw(canvas, drawn_images)
-        # Отрисовать ракеты
+        # draw missiles
         for m in self.missiles:
             m.draw(canvas, drawn_images)
-        # Если игра не запущена - показать splash
+        # splash screen
         if not self.started:
             splash_img = self.image_manager.get_rotated_image("splash", 0)
             canvas.create_image(400, 300, image=splash_img)
             drawn_images.append(splash_img)
 
-        # Показать счёт и жизни
+        # score counter and lives counter
         canvas.create_text(50, 30, text=f"Lives: {self.lives}", fill="white", font=("Helvetica", 16))
         canvas.create_text(750, 30, text=f"Score: {self.score}", fill="white", font=("Helvetica", 16))
 
     def shoot(self):
-        # Проверка задержки между выстрелами
+        # delay between shots logic
         current_time = time.time()
         if current_time - self.last_shot_time < 0.35:
             return

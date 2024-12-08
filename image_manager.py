@@ -19,6 +19,6 @@ class ImageManager:
         if name not in self.images:
             return None
         pil_img = self.images[name]
-        # Поворот изображения (против часовой стрелки), поэтому -angle_degrees
+        # ship and asteroid rotation logic
         rotated = pil_img.rotate(-angle_degrees, expand=True)
         return ImageTk.PhotoImage(rotated)
