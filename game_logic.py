@@ -14,7 +14,7 @@ class GameLogic:
         self.missiles = []
         self.score = 0
         self.lives = LIVES
-        self.last_shot_time = 0.0  # время последнего выстрела
+        self.last_shot_time = 0.0
 
     def start(self):
         self.started = True

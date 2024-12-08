@@ -11,7 +11,7 @@ from game_logic import GameLogic
 class RiceRocksApp:
     def __init__(self, master):
         self.master = master
-        self.master.title("Rice Rocks (Tkinter)")
+        self.master.title("Asteroids Game")
 
         self.canvas = tk.Canvas(master, width=CANVAS_WIDTH, height=CANVAS_HEIGHT, bg="black")
         self.canvas.pack()
