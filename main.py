@@ -8,7 +8,7 @@ from ship import Ship
 from image_manager import ImageManager
 from game_logic import GameLogic
 
-class RiceRocksApp:
+class AsteroidsGameApp:
     def __init__(self, master):
         self.master = master
         self.master.title("Asteroids Game")
@@ -96,5 +96,5 @@ class RiceRocksApp:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = RiceRocksApp(root)
+    app = AsteroidsGameApp(root)
     root.mainloop()

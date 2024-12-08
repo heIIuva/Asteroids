@@ -55,7 +55,7 @@ class GameLogic:
                 if r.collide(m):
                     rocks_to_remove.append(r)
                     missiles_to_remove.append(m)
-                    self.score += 1
+                    self.score += 10
                     break
         self.rocks = [r for r in self.rocks if r not in rocks_to_remove]
         self.missiles = [m for m in self.missiles if m not in missiles_to_remove]
