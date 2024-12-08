@@ -1,6 +1,8 @@
 # game_logic.py
+import time
 from config import LIVES, MISSILE_LIFESPAN, MISSILE_RADIUS, MISSILE_SPEED, ROCK_RADIUS
 from sprite import random_rock
+
 
 class GameLogic:
     def __init__(self, ship, images, image_manager):
@@ -12,6 +14,7 @@ class GameLogic:
         self.missiles = []
         self.score = 0
         self.lives = LIVES
+        self.last_shot_time = 0.0  # время последнего выстрела
 
     def start(self):
         self.started = True
@@ -19,37 +22,32 @@ class GameLogic:
         self.lives = LIVES
         self.rocks = []
         self.missiles = []
+        self.last_shot_time = 0.0
 
     def add_rock(self):
         if not self.started:
             return
 
+        # Ограничение на максимальное количество астероидов
         if len(self.rocks) >= 15:
             return
 
-        # Попытки сгенерировать астероид так, чтобы он не был слишком близко к кораблю
         for _ in range(5):
             rock = random_rock("rock", self.image_manager)
-            dist = ((rock.pos.x - self.ship.pos.x)**2 + (rock.pos.y - self.ship.pos.y)**2)**0.5
+            dist = ((rock.pos.x - self.ship.pos.x) ** 2 + (rock.pos.y - self.ship.pos.y) ** 2) ** 0.5
             if dist > 2 * (ROCK_RADIUS + self.ship.radius):
                 self.rocks.append(rock)
                 return
-        # Если за 5 попыток не получилось - просто пропускаем
 
     def update(self):
         if not self.started:
             return
 
-        # Обновляем корабль
         self.ship.update()
-
-        # Обновляем камни
         self.rocks = [r for r in self.rocks if r.update()]
-
-        # Обновляем ракеты
         self.missiles = [m for m in self.missiles if m.update()]
 
-        # Проверяем столкновения ракета-камень
+        # Столкновения ракета-камень
         rocks_to_remove = []
         missiles_to_remove = []
         for r in self.rocks:
@@ -62,7 +60,7 @@ class GameLogic:
         self.rocks = [r for r in self.rocks if r not in rocks_to_remove]
         self.missiles = [m for m in self.missiles if m not in missiles_to_remove]
 
-        # Проверяем столкновения корабль-камень
+        # Столкновения корабль-камень
         for r in self.rocks:
             if r.collide(self.ship):
                 self.lives -= 1
@@ -96,6 +94,12 @@ class GameLogic:
         canvas.create_text(750, 30, text=f"Score: {self.score}", fill="white", font=("Helvetica", 16))
 
     def shoot(self):
+        # Проверка задержки между выстрелами
+        current_time = time.time()
+        if current_time - self.last_shot_time < 0.35:
+            return
+        self.last_shot_time = current_time
+
         if self.started:
             missile = self.ship.shoot("missile", MISSILE_SPEED, MISSILE_RADIUS, MISSILE_LIFESPAN)
             self.missiles.append(missile)

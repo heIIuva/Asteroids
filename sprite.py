@@ -5,7 +5,7 @@ from vector import Vector
 from config import CANVAS_WIDTH, CANVAS_HEIGHT, ROCK_RADIUS
 
 class Sprite:
-    def __init__(self, pos, vel, ang, ang_vel, image_name, image_manager, radius, lifespan=None, animated=False):
+    def __init__(self, pos, vel, ang, ang_vel, image_name, image_manager, radius, lifespan=None, animated=False, start_pos=None):
         self.pos = pos
         self.vel = vel
         self.angle = ang
@@ -16,13 +16,14 @@ class Sprite:
         self.lifespan = lifespan
         self.animated = animated
         self.age = 0
+        self.start_pos = start_pos if start_pos else pos.copy()
 
     def draw(self, canvas, drawn_images):
         angle_degs = math.degrees(self.angle)
         img = self.image_manager.get_rotated_image(self.image_name, angle_degs)
         if img:
             canvas.create_image(self.pos.x, self.pos.y, image=img)
-            drawn_images.append(img)  # сохраняем ссылку
+            drawn_images.append(img)
         else:
             canvas.create_oval(self.pos.x - self.radius, self.pos.y - self.radius,
                                self.pos.x + self.radius, self.pos.y + self.radius, fill='white')
@@ -30,9 +31,18 @@ class Sprite:
     def update(self):
         self.angle += self.angle_vel
         self.pos.add(self.vel)
-        # Выход за границы
+
+        # Проверяем границы
         self.pos.x %= CANVAS_WIDTH
         self.pos.y %= CANVAS_HEIGHT
+
+        # Если это ракета, проверяем пройденную дистанцию
+        if self.image_name == "missile":
+            dx = self.pos.x - self.start_pos.x
+            dy = self.pos.y - self.start_pos.y
+            distance = math.sqrt(dx*dx + dy*dy)
+            if distance > CANVAS_WIDTH/2:
+                return False
 
         if self.lifespan is not None:
             self.age += 1

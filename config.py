@@ -11,7 +11,7 @@ SHIP_THRUST_IMAGE = "/Users/bigstepper/Downloads/ship_thrust.png"
 MISSILE_IMAGE = "/Users/bigstepper/Downloads/shot2.png"
 ROCK_IMAGE = "/Users/bigstepper/Downloads/asteroid_blue.png"
 NEBULA_IMAGE = "/Users/bigstepper/Downloads/nebula_blue.f2013.png"
-SPLASH_IMAGE = "/Users/bigstepper/Downloads/Asteroids.png"
+SPLASH_IMAGE = "/Users/bigstepper/Downloads/gamePlaceholder.png"
 
 # Параметры корабля
 SHIP_RADIUS = 35

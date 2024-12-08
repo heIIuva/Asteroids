@@ -5,19 +5,21 @@ from vector import Vector
 from config import CANVAS_WIDTH, CANVAS_HEIGHT, SHIP_RADIUS
 
 class Ship:
-    def __init__(self, pos, vel, angle, image_name, image_manager, radius=SHIP_RADIUS):
+    def __init__(self, pos, vel, angle, image_name, image_thrust_name, image_manager, radius=SHIP_RADIUS):
         self.pos = pos
         self.vel = vel
         self.angle = angle
         self.thrust = False
         self.image_name = image_name
+        self.image_thrust_name = image_thrust_name
         self.image_manager = image_manager
         self.radius = radius
         self.angle_vel = 0
 
     def draw(self, canvas, drawn_images):
         angle_degs = math.degrees(self.angle)
-        img = self.image_manager.get_rotated_image(self.image_name, angle_degs)
+        current_image = self.image_thrust_name if self.thrust else self.image_name
+        img = self.image_manager.get_rotated_image(current_image, angle_degs)
         if img:
             canvas.create_image(self.pos.x, self.pos.y, image=img)
             drawn_images.append(img)
@@ -51,4 +53,5 @@ class Ship:
         from sprite import Sprite
         missile_pos = Vector(self.pos.x + forward.x * self.radius, self.pos.y + forward.y * self.radius)
         missile_vel = Vector(self.vel.x + forward.x * missile_speed, self.vel.y + forward.y * missile_speed)
-        return Sprite(missile_pos, missile_vel, self.angle, 0, missile_image_name, self.image_manager, missile_radius, lifespan)
+        # Передаём также стартовую позицию снаряда для контроля расстояния
+        return Sprite(missile_pos, missile_vel, self.angle, 0, missile_image_name, self.image_manager, missile_radius, lifespan, start_pos=missile_pos.copy())

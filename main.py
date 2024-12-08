@@ -2,7 +2,7 @@
 
 import tkinter as tk
 from config import (CANVAS_WIDTH, CANVAS_HEIGHT, SHIP_IMAGE, MISSILE_IMAGE, ROCK_IMAGE,
-                    NEBULA_IMAGE, SPLASH_IMAGE, FPS)
+                    NEBULA_IMAGE, SPLASH_IMAGE, SHIP_THRUST_IMAGE, FPS)
 from vector import Vector
 from ship import Ship
 from image_manager import ImageManager
@@ -19,6 +19,7 @@ class RiceRocksApp:
         # Загрузка изображений
         self.img_manager = ImageManager()
         self.img_manager.load_image("ship", SHIP_IMAGE)
+        self.img_manager.load_image("ship_thrust", SHIP_THRUST_IMAGE)  # загружаем thrust-изображение корабля
         self.img_manager.load_image("missile", MISSILE_IMAGE)
         self.img_manager.load_image("rock", ROCK_IMAGE)
         self.img_manager.load_image("nebula", NEBULA_IMAGE)
@@ -26,6 +27,7 @@ class RiceRocksApp:
 
         self.images = {
             "ship": self.img_manager.get_image("ship"),
+            "ship_thrust": self.img_manager.get_image("ship_thrust"),
             "missile": self.img_manager.get_image("missile"),
             "rock": self.img_manager.get_image("rock"),
             "nebula": self.img_manager.get_image("nebula"),
@@ -35,7 +37,7 @@ class RiceRocksApp:
         # Создаём корабль
         ship_pos = Vector(CANVAS_WIDTH/2, CANVAS_HEIGHT/2)
         ship_vel = Vector(0, 0)
-        self.ship = Ship(ship_pos, ship_vel, 0, "ship", self.img_manager)
+        self.ship = Ship(ship_pos, ship_vel, 0, "ship", "ship_thrust", self.img_manager)
 
         # Логика игры
         self.game = GameLogic(self.ship, self.images, self.img_manager)
@@ -47,7 +49,7 @@ class RiceRocksApp:
 
         self.keys = set()
 
-        self.drawn_images = []  # сюда храним ссылки на изображения текущего кадра
+        self.drawn_images = []  # ссылки на изображения текущего кадра
 
         # Запуск игрового цикла
         self.update_game()
@@ -87,7 +89,7 @@ class RiceRocksApp:
 
     def update_game(self):
         self.canvas.delete("all")
-        self.drawn_images = []  # очищаем список ссылок на изображения перед отрисовкой
+        self.drawn_images = []
         self.game.update()
         self.game.draw(self.canvas, self.drawn_images)
         self.master.after(int(1000/FPS), self.update_game)
